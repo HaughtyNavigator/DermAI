@@ -71,11 +71,33 @@ body, .gradio-container {
     50%      { transform: scale(1.5); opacity:0.5; }
 }
 
-/* ── Column panels via elem_id ──
-   Gradio renders elem_id as the id on the wrapping .svelte-* div's child,
-   so we target #upload-col and #results-col which Gradio puts on the column wrapper ── */
+/* ── Column panels ──
+   ONLY the image widget + results column get the nice white panel.
+   Button, progress bar, confidence label, and confidence output stay transparent
+   → no more unwanted white boxes below the Analyze button or above Confidence. */
 #upload-col > .wrap,
 #upload-col > div,
+#results-col > .wrap,
+#results-col > div {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+/* Image widget gets the panel */
+#upload-col .image-container,
+#upload-col [data-testid="image"],
+#upload-col .svelte-1l6rhwr {
+    background: var(--white) !important;
+    border-radius: 20px !important;
+    border: 2.5px solid var(--honey-bronze) !important;
+    box-shadow: 5px 5px 0 var(--honey-bronze), 0 14px 36px var(--shadow) !important;
+    padding: 22px !important;
+    min-height: 260px !important;
+}
+
+/* Results column keeps its panel */
 #results-col > .wrap,
 #results-col > div {
     background: var(--white) !important;
@@ -85,34 +107,15 @@ body, .gradio-container {
     padding: 22px !important;
 }
 
-/* Fallback: direct children of the column id */
-#upload-col, #results-col {
-    background: var(--white) !important;
-    border-radius: 20px !important;
-    border: 2.5px solid var(--honey-bronze) !important;
-    box-shadow: 5px 5px 0 var(--honey-bronze), 0 14px 36px var(--shadow) !important;
-    padding: 22px !important;
-}
-
-/* ── Panel labels ── */
+/* ── Panel labels (BIG & bold as requested) ── */
 .panel-label {
     display: block;
-    font-size: 0.68rem !important;
+    font-size: 1.15rem !important;
     font-weight: 900 !important;
-    letter-spacing: 2.5px;
+    letter-spacing: 3px;
     text-transform: uppercase;
     color: var(--honey-bronze) !important;
-    margin-bottom: 10px;
-}
-
-/* ── Image upload widget ── */
-#upload-col .image-container,
-#upload-col [data-testid="image"],
-#upload-col .svelte-1l6rhwr {
-    border: 2.5px dashed var(--honey-bronze) !important;
-    border-radius: 14px !important;
-    background: #fffdf0 !important;
-    min-height: 220px !important;
+    margin-bottom: 12px;
 }
 
 /* ── Analyze button ── */
@@ -142,77 +145,54 @@ body, .gradio-container {
     box-shadow: 2px 2px 0 var(--night-bordeaux);
 }
 
-/* ── Progress bar ── */
+/* ── Enhanced progress bar (visible only while processing) ── */
 #progress-wrap {
     width: 100%;
-    height: 5px;
-    background: #f5edb0;
-    border-radius: 3px;
-    margin-top: 10px;
-    overflow: hidden;
+    margin-top: 14px;
     opacity: 0;
-    transition: opacity 0.3s;
+    transition: opacity 0.3s ease;
 }
 #progress-wrap.loading { opacity: 1; }
+
+.progress-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    color: var(--night-bordeaux) !important;
+    letter-spacing: 1px;
+}
+
 #progress-inner {
-    height: 100%;
-    width: 40%;
+    height: 12px;
+    width: 100%;
     background: linear-gradient(90deg, var(--dark-slate-grey), var(--honey-bronze), var(--dark-slate-grey));
     background-size: 200% 100%;
-    border-radius: 3px;
-    display: none;
+    border-radius: 9999px;
     animation: shimmer 1.6s linear infinite;
 }
-#progress-wrap.loading #progress-inner { display: block; }
+
 @keyframes shimmer {
     0%   { background-position: 200% center; }
     100% { background-position: -200% center; }
 }
 
-/* ── Full-page gear overlay ── */
-#gear-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(255, 249, 196, 0.9);
-    backdrop-filter: blur(4px);
-    z-index: 9999;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 22px;
+/* ── Spinner that appears inside the Analyze button ── */
+.spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid var(--vanilla-custard);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+    vertical-align: middle;
+    margin-left: 10px;
 }
-#gear-overlay.active { display: flex; }
-
-.gear-stage {
-    position: relative;
-    width: 130px;
-    height: 130px;
-}
-.gear-item {
-    position: absolute;
-    animation: spin linear infinite;
-}
-.gear-item svg { display: block; }
-.gear-big   { width: 85px; height: 85px; top: 0;  left: 0;   animation-duration: 3.2s; }
-.gear-small { width: 52px; height: 52px; top: 5px; left: 64px; animation-duration: 2s; animation-direction: reverse; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.loading-label {
-    font-size: 1.25rem !important;
-    font-weight: 700 !important;
-    color: var(--night-bordeaux) !important;
-    letter-spacing: 1px;
-}
-.loading-dots::after {
-    content: '';
-    animation: dots 1.4s steps(4, end) infinite;
-}
-@keyframes dots {
-    0%  { content: '';    }
-    25% { content: '.';   }
-    50% { content: '..';  }
-    75% { content: '...'; }
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
 /* ── Circular confidence ── */
@@ -341,89 +321,27 @@ body, .gradio-container {
 }
 
 footer { display: none !important; }
+
+/* ── Loading dots ── */
+.loading-dots::after {
+    content: '';
+    animation: dots 1.4s steps(4, end) infinite;
+}
+@keyframes dots {
+    0%  { content: '';    }
+    25% { content: '.';   }
+    50% { content: '..';  }
+    75% { content: '...'; }
+}
 """
-
-def _gear(color):
-    return (
-        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="{color}">'
-        '<circle cx="50" cy="50" r="11"/>'
-        '<path d="M42 12h16l3 10a30 30 0 0 1 7 4l10-3 8 14-8 8a30 30 0 0 1 0 8l8 8-8 14-10-3'
-        'a30 30 0 0 1-7 4l-3 10H42l-3-10a30 30 0 0 1-7-4l-10 3L14 66l8-8a30 30 0 0 1 0-8l-8-8'
-        ' 8-14 10 3a30 30 0 0 1 7-4z"/>'
-        '</svg>'
-    )
-
-LOADER_JS = """
-<script>
-(function () {
-    var ready = false;
-
-    function showLoader() {
-        var o = document.getElementById('gear-overlay');
-        var p = document.getElementById('progress-wrap');
-        if (o) o.classList.add('active');
-        if (p) p.classList.add('loading');
-    }
-    function hideLoader() {
-        var o = document.getElementById('gear-overlay');
-        var p = document.getElementById('progress-wrap');
-        if (o) o.classList.remove('active');
-        if (p) p.classList.remove('loading');
-    }
-
-    function setup() {
-        if (ready) return;
-
-        // Gradio renders the button with elem_id on a wrapper; find the actual <button>
-        var btnWrap = document.getElementById('analyze-btn');
-        var btn = btnWrap ? (btnWrap.tagName === 'BUTTON' ? btnWrap : btnWrap.querySelector('button')) : null;
-        var resultsCol = document.getElementById('results-col');
-
-        if (!btn || !resultsCol) {
-            setTimeout(setup, 400);
-            return;
-        }
-        ready = true;
-
-        btn.addEventListener('click', showLoader);
-
-        var observer = new MutationObserver(function(mutations) {
-            for (var i = 0; i < mutations.length; i++) {
-                if (mutations[i].addedNodes.length || mutations[i].type === 'characterData') {
-                    hideLoader();
-                    break;
-                }
-            }
-        });
-        observer.observe(resultsCol, { childList: true, subtree: true, characterData: true });
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() { setTimeout(setup, 600); });
-    } else {
-        setTimeout(setup, 600);
-    }
-})();
-</script>
-"""
-
-GEAR_HTML = f"""
-<div id="gear-overlay">
-  <div class="gear-stage">
-    <div class="gear-item gear-big">{_gear('#335c67')}</div>
-    <div class="gear-item gear-small">{_gear('#e09f3e')}</div>
-  </div>
-  <div class="loading-label">Analyzing<span class="loading-dots"></span></div>
-</div>
-"""
-
-MALIGNANT_DISEASES = {"melanoma", "basal cell carcinoma", "basal cell ca."}
 
 def _ph(icon, text):
     return f"<div class='placeholder'><div class='ph-icon'>{icon}</div><div class='ph-txt'>{text}</div></div>"
 
 PH_CIRC = _ph("🩺", "Confidence score will appear here after analysis")
 PH_RES  = _ph("📄", "Upload an image and click Analyze to see AI recommendations")
+
+MALIGNANT_DISEASES = {"melanoma", "basal cell carcinoma", "basal cell ca."}
 
 def analyze_with_ui(image):
     if image is None:
@@ -495,10 +413,54 @@ def analyze_with_ui(image):
     return circle_html, advice_html
 
 
-with gr.Blocks(css=css, title="DermAI") as demo:
+# ── NEW LOADER JS (button spinner + progress bar) ──
+LOADER_JS = """
+<script>
+(function () {
+    var ready = false;
+    var originalBtnHTML = null;
 
-    
-    gr.HTML(GEAR_HTML)
+    function setup() {
+        if (ready) return;
+
+        var btnWrap = document.getElementById('analyze-btn');
+        var btn = btnWrap ? (btnWrap.tagName === 'BUTTON' ? btnWrap : btnWrap.querySelector('button') || btnWrap) : null;
+        var resultsCol = document.getElementById('results-col');
+        var progressWrap = document.getElementById('progress-wrap');
+
+        if (!btn || !resultsCol) {
+            setTimeout(setup, 400);
+            return;
+        }
+        ready = true;
+        originalBtnHTML = btn.innerHTML;
+
+        btn.addEventListener('click', function () {
+            btn.disabled = true;
+            btn.innerHTML = `✦ Analyzing with DermAI <span class="spinner"></span>`;
+            if (progressWrap) progressWrap.classList.add('loading');
+        });
+
+        var observer = new MutationObserver(function () {
+            if (progressWrap) progressWrap.classList.remove('loading');
+            if (btn && originalBtnHTML) {
+                btn.innerHTML = originalBtnHTML;
+                btn.disabled = false;
+            }
+        });
+        observer.observe(resultsCol, { childList: true, subtree: true, characterData: true });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () { setTimeout(setup, 600); });
+    } else {
+        setTimeout(setup, 600);
+    }
+})();
+</script>
+"""
+
+with gr.Blocks(css=css, title="DermAI") as demo:
 
     gr.HTML("""
     <div class='derm-header'>
@@ -509,21 +471,25 @@ with gr.Blocks(css=css, title="DermAI") as demo:
     with gr.Row(equal_height=False):
 
         with gr.Column(scale=1, elem_id="upload-col"):
-            gr.HTML("<span class='panel-label'>📷 Image Input</span>")
+            gr.HTML("<span class='panel-label'>📷 IMAGE INPUT</span>")
             img_input = gr.Image(type="pil", label="", show_label=False)
 
             analyze_btn = gr.Button("✦ Analyze Image", elem_id="analyze-btn")
 
             gr.HTML("""
             <div id="progress-wrap">
+                <div class="progress-header">
+                    🧬 DermAI is analyzing your skin lesion...
+                    <span class="loading-dots"></span>
+                </div>
                 <div id="progress-inner"></div>
             </div>""")
 
-            gr.HTML("<span class='panel-label' style='margin-top:18px;'>📊 Confidence</span>")
+            gr.HTML("<span class='panel-label' style='margin-top:24px;'>📊 CONFIDENCE</span>")
             confidence_out = gr.HTML(PH_CIRC)
 
         with gr.Column(scale=1, elem_id="results-col"):
-            gr.HTML("<span class='panel-label'>📑 Analysis Results</span>")
+            gr.HTML("<span class='panel-label'>📑 ANALYSIS RESULTS</span>")
             results_out = gr.HTML(PH_RES)
 
     gr.HTML("<div class='page-footer'>⚕ For educational purposes only. Always consult a qualified dermatologist.</div>")

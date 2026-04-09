@@ -18,7 +18,7 @@ There are two methods for running this project locally.
 ---
 
 ### Option 1: Using Docker (Recommended for ease of use)
-Docker completely isolates the environment, meaning you don't have to worry about Python versions, virtual environments, or conflicting PyTorch installations. We have configured the Dockerfile to exclusively pull the **CPU-only** version of PyTorch, which keeps the image incredibly lightweight and fast to build.
+Docker completely isolates the environment, meaning you don't have to worry about Python versions, virtual environments, or conflicting PyTorch installations. The Dockerfile is optimized to run smoothly on both standard Intel CPUs and Apple Silicon architectures by dynamically fetching the correct PyTorch binaries.
 
 **1. Copy the `.env.example` file and add your OpenRouter API key:**
 ```bash
@@ -29,6 +29,7 @@ cp .env.example .env
 ```bash
 docker build -t dermai .
 ```
+*(Note: If you are using a Mac with an Apple Silicon M1/M2/M3 chip, use `docker build --platform linux/arm64 -t dermai .` instead to prevent Rosetta emulation errors).*
 
 **3. Run the Container:**
 ```bash
