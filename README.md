@@ -6,7 +6,14 @@ A full-stack, modular AI pipeline that classifies skin lesions from images and p
 
 Because this application relies solely on inferences (and no model training occurs during runtime), **a GPU is completely optional**. You can comfortably run this application on CPU. 
 
-We provide two methods for running this project locally.
+Before jumping in, download the model weights from the link https://drive.google.com/drive/folders/1eS-60iCafM2SPFfJCPYPo7Nro7bek9mX?usp=sharing and create a 'ckpt' named folder on the same level 
+as the chroma_db folder. Place the model weights there and then proceed.
+
+You also need to create an API key from OpenRouter, create an account and create a key, setting the spending limit to 0$ if you want to use it for free. The project utilizes the free version of models from OpenRouter,
+could be subject to change depending on the time you are using this project. If the model is no longer available, simply change the code in rag.py file, load_llm() method, to point to the llm that's free currently.
+
+
+There are two methods for running this project locally.
 
 ---
 
