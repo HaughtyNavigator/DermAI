@@ -16,9 +16,6 @@ RUN apt-get update && apt-get install -y \
 COPY requirements.txt .
 
 # Install dependencies.
-# We explicitly use the PyTorch CPU index URL here to prevent Docker from downloading the massive 4GB+ GPU version of torch,
-# keeping the image extremely small and fast.
-RUN pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the application code
