@@ -13,11 +13,11 @@ You also need to create an API key from OpenRouter, create an account and create
 could be subject to change depending on the time you are using this project. If the model is no longer available, simply change the code in rag.py file, load_llm() method, to point to the llm that's free currently.
 
 
-There are two methods for running this project locally.
+There are two methods for running this project locally. Option 2 is highly recommended and tested, Option 1 sometimes crashes due to docker issues. Might require higher system RAM to be able to accomodate.
 
 ---
 
-### Option 1: Using Docker (Recommended for ease of use)
+### Option 1: Using Docker 
 Docker completely isolates the environment, meaning you don't have to worry about Python versions, virtual environments, or conflicting PyTorch installations. The Dockerfile is optimized to run smoothly on both standard Intel CPUs and Apple Silicon architectures by dynamically fetching the correct PyTorch binaries.
 
 **1. Copy the `.env.example` file and add your OpenRouter API key:**
@@ -39,7 +39,7 @@ Navigate to `http://localhost:8080` in your web browser.
 
 ---
 
-### Option 2: Using `requirements.txt` (Local Python Environment)
+### Option 2: Using `requirements.txt` (Local Python Environment) (Recommended for ease of use)
 If you prefer to run things natively on your machine or utilize a local CUDA GPU, use this method.
 
 **1. Clone the repository and navigate into it**
