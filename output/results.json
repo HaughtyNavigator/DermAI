@@ -1,0 +1,11 @@
+{
+  "model": "efficientnet_v2_m",
+  "image_size": 480,
+  "augmentation": "cutmix",
+  "tta_n": 5,
+  "test_accuracy_single": 0.8932,
+  "test_accuracy_tta": 0.9017,
+  "test_weighted_f1_single": 0.893,
+  "test_weighted_f1_tta": 0.9018,
+  "best_val_f1": 0.9045
+}

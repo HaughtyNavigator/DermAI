@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+python-multipart
+gradio
+torch
+torchvision
+Pillow
+langchain
+langchain-chroma
+langchain-openai
+langchain-huggingface
+sentence-transformers
+python-dotenv

@@ -1,0 +1,70 @@
+# DermAI: Skin Disease Classifier & Advisory System
+
+A full-stack, modular AI pipeline that classifies skin lesions from images and provides contextual, LLM-generated medical advice based on a Retrieval-Augmented Generation (RAG) system.
+
+## 🚀 Two Ways to Run
+
+Because this application relies solely on inferences (and no model training occurs during runtime), **a GPU is completely optional**. You can comfortably run this application on CPU. 
+
+We provide two methods for running this project locally.
+
+---
+
+### Option 1: Using Docker (Recommended for ease of use)
+Docker completely isolates the environment, meaning you don't have to worry about Python versions, virtual environments, or conflicting PyTorch installations. We have configured the Dockerfile to exclusively pull the **CPU-only** version of PyTorch, which keeps the image incredibly lightweight and fast to build.
+
+**1. Copy the `.env.example` file and add your OpenRouter API key:**
+```bash
+cp .env.example .env
+```
+
+**2. Build the Docker Image:**
+```bash
+docker build -t dermai .
+```
+
+**3. Run the Container:**
+```bash
+docker run -p 8080:8080 --env-file .env dermai
+```
+Navigate to `http://localhost:8080` in your web browser.
+
+---
+
+### Option 2: Using `requirements.txt` (Local Python Environment)
+If you prefer to run things natively on your machine or utilize a local CUDA GPU, use this method.
+
+**1. Clone the repository and navigate into it**
+
+**2. Create a virtual environment (optional but recommended):**
+```bash
+python -m venv venv
+```
+Activate it:
+- **Windows:** `venv\Scripts\activate`
+- **Mac/Linux:** `source venv/bin/activate`
+
+**3. Install Dependencies:**
+```bash
+pip install -r requirements.txt
+```
+
+*(Note: If you specifically want to run on GPU or CPU, check [PyTorch's official site](https://pytorch.org/get-started/locally/) for the exact `torch` install command for your system).*
+
+**4. Set up your API key:**
+```bash
+cp .env.example .env
+```
+Open `.env` and paste your OpenRouter API key inside.
+
+**5. Start the frontend server:**
+```bash
+python frontend.py
+```
+Navigate to `http://localhost:8080` in your web browser.
+
+## 🧩 Architecture
+- `main.py`: The FastAPI backend endpoints (if you want to use the API headless).
+- `frontend.py`: The UI dashboard powered by Gradio.
+- `model.py`: Handles CNN inference using EfficientNetV2.
+- `rag.py`: Manages vector retrieval (ChromaDB) and the LLM generation pipeline.
