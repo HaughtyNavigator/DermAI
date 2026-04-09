@@ -4,7 +4,7 @@ A full-stack, modular AI pipeline that classifies skin lesions from images and p
 
 ## 🚀 Two Ways to Run
 
-Because this application relies solely on inferences (and no model training occurs during runtime), **a GPU is completely optional**. You can comfortably run this application on CPU. 
+Because this application relies solely on inferences (and no model training occurs during runtime), **a GPU is completely optional**. You can comfortably run this application on CPU. You could also build the vector database using skin_disease_pdfs by running **python build_db.py**
 
 Before jumping in, download the model weights from the link https://drive.google.com/drive/folders/1eS-60iCafM2SPFfJCPYPo7Nro7bek9mX?usp=sharing and create a 'ckpt' named folder on the same level 
 as the chroma_db folder. Place the model weights there and then proceed.
